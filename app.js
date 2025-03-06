@@ -1,16 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
-const sanitizer = require('sanitizer');
+const express = require('express'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    sanitizer = require('sanitizer'),
+    app = express(),
+    port = 8000;
 
-const app = express();
-const port = 8000;
-
-// Middleware Setup
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Enable PUT & DELETE method override via `_method`
-app.use(methodOverride((req, res) => {
+app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
         let method = req.body._method;
         delete req.body._method;
@@ -18,76 +15,55 @@ app.use(methodOverride((req, res) => {
     }
 }));
 
-// Set EJS as templating engine
 app.set('view engine', 'ejs');
 
-// Store Todo Items
 let todolist = [];
 
-/* ✅ Display To-Do List */
-app.get('/todo', (req, res) => {
-    res.render('todo.ejs', { todolist });
+/* Display Todo List */
+app.get('/todo', function (req, res) {
+    res.render('todo', { todolist });
 });
 
-/* ✅ Add a New Task */
-app.post('/todo/add/', (req, res) => {
-    let newTodo = sanitizer.escape(req.body.newtodo);
-    if (newTodo.trim() !== '') {
-        todolist.push({ text: newTodo, completed: false });
+/* Add a Task */
+app.post('/todo/add/', function (req, res) {
+    let newTodo = req.body.newtodo.trim(); // Remove extra spaces
+    if (newTodo) {
+        todolist.push(sanitizer.escape(newTodo)); // Fix the bug here
     }
     res.redirect('/todo');
 });
 
-/* ✅ Delete a Task */
-app.post('/todo/delete/:id', (req, res) => {
-    let id = req.params.id;
-    if (todolist[id]) {
+/* Delete a Task */
+app.get('/todo/delete/:id', function (req, res) {
+    let id = parseInt(req.params.id);
+    if (!isNaN(id) && id >= 0 && id < todolist.length) {
         todolist.splice(id, 1);
     }
     res.redirect('/todo');
 });
 
-/* ✅ Get a Single Task for Editing */
-app.get('/todo/:id', (req, res) => {
-    let todoIdx = req.params.id;
-    let todo = todolist[todoIdx];
-
-    if (todo) {
-        res.render('edititem.ejs', { todoIdx, todo });
+/* Edit a Task - Render Edit Page */
+app.get('/todo/:id', function (req, res) {
+    let id = parseInt(req.params.id);
+    if (!isNaN(id) && id >= 0 && id < todolist.length) {
+        res.render('edititem', { todoIdx: id, todo: todolist[id] });
     } else {
         res.redirect('/todo');
     }
 });
 
-/* ✅ Edit a Task */
-app.post('/todo/edit/:id', (req, res) => {
-    let todoIdx = req.params.id;
-    let editTodo = sanitizer.escape(req.body.editTodo);
-
-    if (editTodo.trim() !== '' && todolist[todoIdx]) {
-        todolist[todoIdx].text = editTodo;
+/* Save Edited Task */
+app.put('/todo/edit/:id', function (req, res) {
+    let id = parseInt(req.params.id);
+    let editTodo = req.body.editTodo.trim();
+    if (!isNaN(id) && id >= 0 && id < todolist.length && editTodo) {
+        todolist[id] = sanitizer.escape(editTodo);
     }
     res.redirect('/todo');
 });
 
-/* ✅ Toggle Task Completion */
-app.post('/todo/complete/:id', (req, res) => {
-    let id = req.params.id;
-    if (todolist[id]) {
-        todolist[id].completed = !todolist[id].completed;
-    }
-    res.redirect('/todo');
-});
+/* Redirect Unknown Routes */
+app.use((req, res) => res.redirect('/todo'));
 
-/* 🔄 Redirect Unknown Routes to /todo */
-app.use((req, res) => {
-    res.redirect('/todo');
-});
-
-/* ✅ Start Server */
-app.listen(port, () => {
-    console.log(`🚀 Todolist running on http://0.0.0.0:${port}`);
-});
-
-// Export app
-module.exports = app;
+/* Start Server */
+app.listen(port, () => console.log(`Todo List is live on http://0.0.0.0:${port}`));
