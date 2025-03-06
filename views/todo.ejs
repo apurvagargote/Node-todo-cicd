@@ -1,147 +1,98 @@
+<%
+    const express = require('express');
+    const bodyParser = require('body-parser');
+    const app = express();
+    
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+
+    let todolist = [
+        { text: "Learn Jenkins", completed: false },
+        { text: "Practice EJS", completed: false }
+    ];
+
+    app.set('view engine', 'ejs');
+
+    app.get('/', (req, res) => {
+        res.render('index', { todolist });
+    });
+
+    app.post('/todo/add', (req, res) => {
+        todolist.push({ text: req.body.newtodo, completed: false });
+        res.redirect('/');
+    });
+
+    app.post('/todo/delete/:id', (req, res) => {
+        todolist.splice(req.params.id, 1);
+        res.redirect('/');
+    });
+
+    app.get('/todo/edit/:id', (req, res) => {
+        res.render('edit', { todo: todolist[req.params.id], todoIdx: req.params.id });
+    });
+
+    app.post('/todo/edit/:id', (req, res) => {
+        todolist[req.params.id].text = req.body.editTodo;
+        res.redirect('/');
+    });
+
+    app.post('/todo/complete/:id', (req, res) => {
+        todolist[req.params.id].completed = !todolist[req.params.id].completed;
+        res.redirect('/');
+    });
+
+    app.listen(3000, () => console.log("✅ Server running on http://localhost:3000"));
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Todo List App</title>
+    <title>Todo List</title>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1e1e2e;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 {
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            max-width: 400px;
-            margin: 20px auto;
-        }
-
-        ul li {
-            background: #2a2a3a;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.3s;
-            color: white;
-        }
-
-        ul li:hover {
-            transform: scale(1.05);
-        }
-
-        .completed {
-            text-decoration: line-through;
-            color: #aaa;
-        }
-
-        .favorite {
-            color: gold;
-        }
-
-        .btn {
-            cursor: pointer;
-            font-size: 16px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-
-        .fav-btn {
-            background: none;
-            color: gold;
-        }
-
-        .complete-btn {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .delete-btn {
-            background: red;
-            color: white;
-        }
-
-        .edit-btn {
-            background: #ffc107;
-            color: black;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 20px auto;
-            background: #2a2a3a;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 10px;
-            background: #3a3a4a;
-            color: white;
-            outline: none;
-        }
-
-        input[type="submit"] {
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
+        h1 { background-color: #4CAF50; color: white; padding: 20px; margin: 0; }
+        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        ul { list-style: none; padding: 0; }
+        ul li { background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border-radius: 5px; transition: 0.3s; }
+        ul li.completed { text-decoration: line-through; opacity: 0.6; }
+        .edit-btn, .delete-btn { cursor: pointer; padding: 5px 10px; border: none; margin-left: 5px; transition: 0.3s; }
+        .edit-btn { background-color: #FFC107; color: white; border-radius: 3px; }
+        .delete-btn { background-color: red; color: white; border-radius: 3px; }
+        .edit-btn:hover { background-color: #e0a800; }
+        .delete-btn:hover { background-color: darkred; }
+        form { margin-top: 20px; }
+        input[type="text"] { width: 80%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
     </style>
 </head>
-
 <body>
-    <h1>🚀 Todo List</h1>
-
-    <% if (todolist.length === 0) { %>
-        <p>No tasks yet! Add one below. 🚀</p>
-    <% } else { %>
-        <ul>
+    <h1>Todo List</h1>
+    <div class="container">
+        <ul id="todoList">
             <% todolist.forEach(function(todo, index) { %>
-            <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
-                <button class="btn fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</button>
-                <button class="btn complete-btn" onclick="toggleComplete(<%= index %>)">✅</button>
-                <span><%- todo.text %></span>
-                <a href="/todo/edit/<%= index %>" class="btn edit-btn">✎</a>
-                <a href="/todo/delete/<%= index %>" class="btn delete-btn">✘</a>
-            </li>
+                <li class="<%= todo.completed ? 'completed' : '' %>">
+                    <span onclick="toggleComplete(<%= index %>)"><%- todo.text %></span>
+                    <div>
+                        <a href="/todo/edit/<%= index %>" class="edit-btn">✎</a>
+                        <form action="/todo/delete/<%= index %>" method="post" style="display:inline;">
+                            <button type="submit" class="delete-btn">✘</button>
+                        </form>
+                    </div>
+                </li>
             <% }); %>
         </ul>
-    <% } %>
 
-    <form action="/todo/add" method="POST">
-        <input type="text" name="newtodo" placeholder="Add a new task..." autofocus required />
-        <input type="submit" value="Add Task" />
-    </form>
+        <form action="/todo/add/" method="post">
+            <input type="text" name="newtodo" id="newtodo" autofocus placeholder="New task..." />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
 
     <script>
         function toggleComplete(index) {
-            fetch(`/todo/complete/${index}`, { method: 'POST' })
-                .then(() => location.reload());
-        }
-
-        function toggleFavorite(index) {
-            fetch(`/todo/favorite/${index}`, { method: 'POST' })
-                .then(() => location.reload());
+            fetch('/todo/complete/' + index, { method: 'POST' })
+                .then(() => window.location.reload());
         }
     </script>
 </body>
