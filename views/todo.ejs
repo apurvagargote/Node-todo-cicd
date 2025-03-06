@@ -97,19 +97,23 @@
         .favorite-btn { color: var(--favorite-btn); }
         .favorite-btn:hover { color: #ffcc00; }
 
-        /* Form */
-        form {
-            margin-top: 20px;
-        }
+      form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the form inside the container */
+}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            background: var(--input-bg);
-            border-radius: 10px;
-            color: var(--text-color);
-        }
+input[type="text"] {
+    width: 90%; /* Reduce width slightly to fit within the container */
+    max-width: 350px; /* Prevents it from becoming too wide */
+    padding: 12px;
+    border: none;
+    background: var(--input-bg);
+    border-radius: 10px;
+    color: var(--text-color);
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
 
         .btn {
             background-color: var(--btn-bg);
