@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <title>Edit Task</title>
+        <title>Edit Todo</title>
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
                 background-color: #1e1e2e;
-                color: white;
-                text-align: center;
-                padding: 50px;
+                color: #fff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
             }
 
             h1 {
-                color: #ff758c;
+                color: white;
+                text-align: center;
             }
 
             form {
                 background: #2a2a3a;
                 padding: 20px;
                 border-radius: 10px;
-                display: inline-block;
+                width: 50%;
+                max-width: 500px;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             }
 
@@ -31,52 +36,40 @@
 
             input[type="text"] {
                 width: 100%;
-                padding: 10px;
+                padding: 12px;
                 border-radius: 5px;
                 border: none;
+                font-size: 16px;
                 background: #3a3a4a;
                 color: white;
                 outline: none;
-                font-size: 16px;
             }
 
             input[type="submit"] {
                 background: linear-gradient(135deg, #ff7eb3, #ff758c);
                 color: white;
                 border: none;
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 border-radius: 5px;
                 font-size: 16px;
                 cursor: pointer;
-                margin-top: 10px;
+                transition: background 0.3s ease;
             }
 
             input[type="submit"]:hover {
                 background: linear-gradient(135deg, #ff4d6d, #ff3b58);
             }
 
-            a {
-                display: block;
-                margin-top: 20px;
-                color: #ffc107;
-                text-decoration: none;
-            }
-
-            a:hover {
-                color: #ffdd57;
-            }
         </style>
     </head>
 
     <body>
         <h1>Edit Task</h1>
         <form action="/todo/edit/<%= todoIdx %>" method="post">
-            <input type="hidden" name="_method" value="PUT">
             <label for="editTodo">Change to:</label>
             <input type="text" name="editTodo" id="editTodo" autofocus placeholder="<%- todo %>" />
             <input type="submit" value="Save" />
         </form>
-        <a href="/">⬅ Back to Todo List</a>
     </body>
 </html>
