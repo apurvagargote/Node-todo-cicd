@@ -54,9 +54,9 @@
 
 <body>
     <h1>Edit Task</h1>
-    <form action="/todo/edit/<%= todoIdx %>" method="post">
+    <form action="/todo/edit/<%= todoIdx %>" method="POST">
         <label for="editTodo">Update Task:</label>
-        <input type="text" name="editTodo" id="editTodo" placeholder="<%- todo.text %>" autofocus />
+        <input type="text" name="editTodo" id="editTodo" value="<%- todo.text %>" autofocus required />
         <input type="submit" value="Save Changes" />
     </form>
 </body>
