@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Todo List</title>
+        <title>Todo List App</title>
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
                 background-color: #1e1e2e;
-                color: white;
+                color: #fff;
                 margin: 0;
                 padding: 0;
                 display: flex;
@@ -42,16 +42,32 @@
                 align-items: center;
                 justify-content: space-between;
                 transition: transform 0.2s ease-in-out;
+                position: relative;
             }
 
             ul li:hover {
                 transform: scale(1.05);
             }
 
-            ul li a {
-                text-decoration: none;
-                font-weight: bold;
-                transition: color 0.3s ease;
+            .completed {
+                text-decoration: line-through;
+                color: #aaa;
+            }
+
+            .favorite {
+                color: gold;
+            }
+
+            .fav-btn {
+                position: absolute;
+                left: 10px;
+                cursor: pointer;
+                font-size: 18px;
+                transition: color 0.3s;
+            }
+
+            .fav-btn:hover {
+                color: yellow;
             }
 
             .delete-btn {
@@ -75,6 +91,17 @@
 
             .edit-btn:hover {
                 color: #e6a700;
+            }
+
+            .complete-btn {
+                color: #4CAF50;
+                cursor: pointer;
+                font-size: 18px;
+                transition: color 0.3s;
+            }
+
+            .complete-btn:hover {
+                color: #45a049;
             }
 
             form {
@@ -132,11 +159,11 @@
         <h1>🚀 My Todo List</h1>
         <ul>
             <% todolist.forEach(function(todo, index) { %>
-            <li>
-                <div>
-                    <a href="/todo/<%= index %>" class="edit-btn">✎</a>
-                    <%- todo %>
-                </div>
+            <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
+                <span class="fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</span>
+                <span onclick="toggleComplete(<%= index %>)" class="complete-btn">✅</span>
+                <a href="/todo/<%= index %>" class="edit-btn">✎</a>
+                <%- todo.text %>
                 <a href="/todo/delete/<%= index %>" class="delete-btn">✘</a>
             </li>
             <% }); %>
@@ -149,5 +176,17 @@
                 <input type="submit" value="Add Task" />
             </p>
         </form>
+
+        <script>
+            function toggleComplete(index) {
+                fetch(`/todo/complete/${index}`, { method: 'POST' })
+                    .then(() => location.reload());
+            }
+
+            function toggleFavorite(index) {
+                fetch(`/todo/favorite/${index}`, { method: 'POST' })
+                    .then(() => location.reload());
+            }
+        </script>
     </body>
 </html>
