@@ -3,11 +3,12 @@
 <head>
     <title>Edit Task</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
-        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; }
+        body { font-family: Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; transition: all 0.3s ease; }
+        .container { max-width: 400px; margin: 20px auto; background: var(--card-bg); padding: 20px; border-radius: 10px; }
         h1 { margin-bottom: 20px; }
         input[type="text"] { width: 80%; padding: 10px; }
-        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 20px; }
+        input[type="submit"] { background-color: var(--btn-bg); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        input[type="submit"]:hover { background-color: var(--btn-hover); }
     </style>
 </head>
 <body>
