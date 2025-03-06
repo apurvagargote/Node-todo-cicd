@@ -3,93 +3,75 @@
 <head>
     <title>Edit Task</title>
     <style>
-        /* 🔹 Same Cool Theme & Glassmorphism */
+        /* Same Sexy Minimal Theme */
         :root {
-            --bg-gradient: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
-            --text-color: #fff;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --input-bg: rgba(255, 255, 255, 0.2);
-            --btn-bg: #6a11cb;
-            --btn-hover: #9b39f5;
-        }
-
-        [data-theme="dark"] {
-            --bg-gradient: linear-gradient(135deg, #161616, #333, #111);
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
             --text-color: #ddd;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --input-bg: rgba(255, 255, 255, 0.1);
-            --btn-bg: #52057b;
-            --btn-hover: #9b39f5;
+            --input-bg: #2a2a2a;
+            --btn-bg: #6f42c1;
+            --btn-hover: #8257e5;
         }
 
-        /* Global Styles */
         body {
             font-family: "Poppins", sans-serif;
-            background: var(--bg-gradient);
+            background-color: var(--bg-color);
             color: var(--text-color);
             text-align: center;
             margin: 0;
-            transition: all 0.5s ease-in-out;
+            padding: 20px;
         }
 
         .container {
-            max-width: 400px;
-            margin: 50px auto;
+            max-width: 350px;
+            margin: auto;
             padding: 20px;
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 20px;
+            color: #b39ddb;
         }
 
         /* Form */
-        form {
-            margin-top: 20px;
-        }
-
         input[type="text"] {
             width: 100%;
             padding: 12px;
             border: none;
             background: var(--input-bg);
-            backdrop-filter: blur(5px);
             border-radius: 10px;
             color: var(--text-color);
         }
 
         .buttons {
-            margin-top: 20px;
             display: flex;
             justify-content: space-between;
+            margin-top: 15px;
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 12px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
-            color: white;
+            flex: 1;
+            margin: 0 5px;
         }
 
-        .save-btn { background-color: var(--btn-bg); }
+        .save-btn { background-color: var(--btn-bg); color: white; }
         .save-btn:hover { background-color: var(--btn-hover); }
 
-        .cancel-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        .cancel-btn:hover { background-color: rgba(255, 255, 255, 0.4); }
+        .cancel-btn { background-color: var(--input-bg); color: #bbb; }
+        .cancel-btn:hover { background-color: #333; }
     </style>
 </head>
 <body>
-    <h1>Edit Task ✏️</h1>
+    <h1>Edit Task</h1>
     <div class="container">
         <form action="/todo/edit/<%= todoIdx %>" method="post">
             <input type="hidden" name="_method" value="PUT">
