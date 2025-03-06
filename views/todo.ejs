@@ -3,22 +3,123 @@
 <head>
     <title>Todo List</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
-        h1 { background-color: #4CAF50; color: white; padding: 20px; margin: 0; }
-        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; }
-        ul { list-style: none; padding: 0; }
-        ul li { background: white; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; border-radius: 5px; }
-        ul li.completed { text-decoration: line-through; opacity: 0.6; }
-        .edit-btn, .delete-btn, .complete-btn { padding: 5px 10px; border: none; margin-left: 5px; cursor: pointer; }
-        .edit-btn { background-color: #FFC107; color: white; }
-        .delete-btn { background-color: red; color: white; }
-        .complete-btn { background-color: #4CAF50; color: white; }
+        /* Global Styles */
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --card-bg: white;
+            --btn-bg: #4CAF50;
+            --btn-hover: #45a049;
+            --delete-bg: red;
+            --edit-bg: #FFC107;
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #1e1e1e;
+            --text-color: #fff;
+            --card-bg: #333;
+            --btn-bg: #66bb6a;
+            --btn-hover: #57a05b;
+            --delete-bg: #ff4d4d;
+            --edit-bg: #FFD700;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            background-color: var(--btn-bg);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .toggle-theme {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: var(--card-bg);
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        ul li.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .edit-btn, .delete-btn, .complete-btn {
+            padding: 5px 10px;
+            border: none;
+            margin-left: 5px;
+            cursor: pointer;
+            color: white;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .edit-btn { background-color: var(--edit-bg); }
+        .delete-btn { background-color: var(--delete-bg); }
+        .complete-btn { background-color: var(--btn-bg); }
+
+        .edit-btn:hover { background-color: darkgoldenrod; }
+        .delete-btn:hover { background-color: darkred; }
+        .complete-btn:hover { background-color: var(--btn-hover); }
+
         form { margin-top: 20px; }
-        input[type="text"] { width: 80%; padding: 10px; }
-        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 20px; }
+        input[type="text"] {
+            width: 75%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: var(--btn-bg);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: var(--btn-hover);
+        }
     </style>
 </head>
 <body>
+    <button class="toggle-theme" onclick="toggleTheme()">🌙</button>
     <h1>Todo List</h1>
     <div class="container">
         <ul>
@@ -43,5 +144,22 @@
             <input type="submit" value="Add" />
         </form>
     </div>
+
+    <script>
+        function toggleTheme() {
+            let currentTheme = document.body.getAttribute("data-theme");
+            let newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.body.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            document.querySelector(".toggle-theme").innerText = newTheme === "dark" ? "☀️" : "🌙";
+        }
+
+        // Load saved theme
+        document.addEventListener("DOMContentLoaded", function() {
+            let savedTheme = localStorage.getItem("theme") || "light";
+            document.body.setAttribute("data-theme", savedTheme);
+            document.querySelector(".toggle-theme").innerText = savedTheme === "dark" ? "☀️" : "🌙";
+        });
+    </script>
 </body>
 </html>
