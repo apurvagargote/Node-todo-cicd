@@ -26,9 +26,9 @@ app.get('/todo', function (req, res) {
 
 /* Add a Task */
 app.post('/todo/add/', function (req, res) {
-    let newTodo = req.body.newtodo.trim(); // Remove extra spaces
+    let newTodo = req.body.newtodo.trim();
     if (newTodo) {
-        todolist.push(sanitizer.escape(newTodo)); // Fix the bug here
+        todolist.push({ text: sanitizer.escape(newTodo), completed: false, favorite: false });
     }
     res.redirect('/todo');
 });
@@ -42,11 +42,29 @@ app.get('/todo/delete/:id', function (req, res) {
     res.redirect('/todo');
 });
 
-/* Edit a Task - Render Edit Page */
+/* Toggle Complete Task */
+app.get('/todo/complete/:id', function (req, res) {
+    let id = parseInt(req.params.id);
+    if (!isNaN(id) && id >= 0 && id < todolist.length) {
+        todolist[id].completed = !todolist[id].completed;
+    }
+    res.redirect('/todo');
+});
+
+/* Toggle Favorite Task */
+app.get('/todo/favorite/:id', function (req, res) {
+    let id = parseInt(req.params.id);
+    if (!isNaN(id) && id >= 0 && id < todolist.length) {
+        todolist[id].favorite = !todolist[id].favorite;
+    }
+    res.redirect('/todo');
+});
+
+/* Edit Task - Render Edit Page */
 app.get('/todo/:id', function (req, res) {
     let id = parseInt(req.params.id);
     if (!isNaN(id) && id >= 0 && id < todolist.length) {
-        res.render('edititem', { todoIdx: id, todo: todolist[id] });
+        res.render('edititem', { todoIdx: id, todo: todolist[id].text });
     } else {
         res.redirect('/todo');
     }
@@ -57,7 +75,7 @@ app.put('/todo/edit/:id', function (req, res) {
     let id = parseInt(req.params.id);
     let editTodo = req.body.editTodo.trim();
     if (!isNaN(id) && id >= 0 && id < todolist.length && editTodo) {
-        todolist[id] = sanitizer.escape(editTodo);
+        todolist[id].text = sanitizer.escape(editTodo);
     }
     res.redirect('/todo');
 });
