@@ -4,18 +4,17 @@
     <title>Edit Task</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
-        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; }
         h1 { margin-bottom: 20px; }
-        input[type="text"] { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        input[type="submit"] { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        input[type="submit"]:hover { background-color: #45a049; }
+        input[type="text"] { width: 80%; padding: 10px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 20px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Edit Task</h1>
         <form action="/todo/edit/<%= todoIdx %>" method="post">
-            <input type="text" name="editTodo" id="editTodo" value="<%- todo.text %>" />
+            <input type="text" name="editTodo" value="<%- todo.text %>" />
             <input type="submit" value="Save" />
         </form>
     </div>
