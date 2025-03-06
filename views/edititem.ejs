@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Edit Todo</title>
+    <title>Edit Task</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #1e1e2e;
             color: #fff;
             text-align: center;
-            padding: 50px;
+            padding: 20px;
         }
 
         h1 {
@@ -18,11 +18,11 @@
         }
 
         form {
+            max-width: 400px;
+            margin: 20px auto;
             background: #2a2a3a;
             padding: 20px;
             border-radius: 10px;
-            max-width: 400px;
-            margin: 20px auto;
         }
 
         label {
@@ -38,6 +38,7 @@
             margin-bottom: 10px;
             background: #3a3a4a;
             color: white;
+            outline: none;
         }
 
         input[type="submit"] {
@@ -54,10 +55,15 @@
 
 <body>
     <h1>Edit Task</h1>
-    <form action="/todo/edit/<%= todoIdx %>" method="POST">
-        <label for="editTodo">Update Task:</label>
-        <input type="text" name="editTodo" id="editTodo" value="<%- todo.text %>" autofocus required />
-        <input type="submit" value="Save Changes" />
+
+    <form action="/todo/edit/<%= todoIdx %>" method="post">
+        <p>
+            <label for="editTodo">Change to:</label>
+            <input type="hidden" name="_method" value="PUT">
+            <input type="text" name="editTodo" id="editTodo" autofocus value="<%- todo.text %>" required />
+            <input type="submit" value="Save" />
+        </p>
     </form>
 </body>
 </html>
+
