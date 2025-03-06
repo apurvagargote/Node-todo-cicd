@@ -1,4 +1,4 @@
-# **Jenkins CI/CD Pipeline Setup on AWS EC2**
+# **Deploy Nodejs ToDo App using Jenkins CI/CD Pipeline Setup on AWS EC2**
 
 ![Todo App UI](Images/ToDo-App-1.png)
 
@@ -178,7 +178,6 @@
   ```bash
   http://your-ec2-ip:8000
   ```
-  ![Todo App UI](Images/ToDo-App-1.png)
   This triggers the pipeline and deploys the application successfully.
 
 ---
