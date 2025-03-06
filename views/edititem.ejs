@@ -3,67 +3,21 @@
 <head>
     <title>Edit Task</title>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1e1e2e;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 {
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 20px auto;
-            background: #2a2a3a;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 10px;
-            background: #3a3a4a;
-            color: white;
-            outline: none;
-        }
-
-        input[type="submit"] {
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
+        .container { max-width: 400px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { margin-bottom: 20px; }
+        input[type="text"] { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
     </style>
 </head>
-
 <body>
-    <h1>Edit Task</h1>
-
-    <form action="/todo/edit/<%= todoIdx %>" method="post">
-        <p>
-            <label for="editTodo">Change to:</label>
-            <input type="hidden" name="_method" value="PUT">
-            <input type="text" name="editTodo" id="editTodo" autofocus value="<%- todo.text %>" required />
+    <div class="container">
+        <h1>Edit Task</h1>
+        <form action="/todo/edit/<%= todoIdx %>" method="post">
+            <input type="text" name="editTodo" id="editTodo" value="<%- todo.text %>" />
             <input type="submit" value="Save" />
-        </p>
-    </form>
+        </form>
+    </div>
 </body>
 </html>
-
