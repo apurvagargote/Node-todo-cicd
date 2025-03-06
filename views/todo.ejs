@@ -1,192 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Todo List App</title>
-        <style>
-            body {
-                font-family: 'Poppins', sans-serif;
-                background-color: #1e1e2e;
-                color: #fff;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                min-height: 100vh;
-            }
+<head>
+    <title>Todo List App</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1e1e2e;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
 
-            h1 {
-                background: linear-gradient(135deg, #ff7eb3, #ff758c);
-                color: white;
-                padding: 20px;
-                text-align: center;
-                width: 100%;
-                border-radius: 0 0 20px 20px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            }
+        h1 {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            padding: 15px;
+            border-radius: 10px;
+        }
 
-            ul {
-                list-style: none;
-                padding: 0;
-                margin: 20px 0;
-                width: 50%;
-                max-width: 500px;
-            }
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 400px;
+            margin: 20px auto;
+        }
 
-            ul li {
-                background: #2a2a3a;
-                border-radius: 10px;
-                padding: 15px;
-                margin-bottom: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                transition: transform 0.2s ease-in-out;
-                position: relative;
-            }
+        ul li {
+            background: #2a2a3a;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
 
-            ul li:hover {
-                transform: scale(1.05);
-            }
+        ul li:hover {
+            transform: scale(1.05);
+        }
 
-            .completed {
-                text-decoration: line-through;
-                color: #aaa;
-            }
+        .completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
 
-            .favorite {
-                color: gold;
-            }
+        .favorite {
+            color: gold;
+        }
 
-            .fav-btn {
-                position: absolute;
-                left: 10px;
-                cursor: pointer;
-                font-size: 18px;
-                transition: color 0.3s;
-            }
+        .btn {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
 
-            .fav-btn:hover {
-                color: yellow;
-            }
+        .fav-btn {
+            background: none;
+            color: gold;
+        }
 
-            .delete-btn {
-                color: #ff4d4d;
-                font-size: 18px;
-                cursor: pointer;
-                transition: color 0.3s;
-            }
+        .complete-btn {
+            background: #4CAF50;
+            color: white;
+        }
 
-            .delete-btn:hover {
-                color: #ff1a1a;
-            }
+        .delete-btn {
+            background: red;
+            color: white;
+        }
 
-            .edit-btn {
-                color: #ffc107;
-                font-size: 18px;
-                cursor: pointer;
-                margin-right: 10px;
-                transition: color 0.3s;
-            }
+        .edit-btn {
+            background: #ffc107;
+            color: black;
+        }
 
-            .edit-btn:hover {
-                color: #e6a700;
-            }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background: #2a2a3a;
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-            .complete-btn {
-                color: #4CAF50;
-                cursor: pointer;
-                font-size: 18px;
-                transition: color 0.3s;
-            }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+            background: #3a3a4a;
+            color: white;
+            outline: none;
+        }
 
-            .complete-btn:hover {
-                color: #45a049;
-            }
+        input[type="submit"] {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
 
-            form {
-                background: #2a2a3a;
-                padding: 20px;
-                border-radius: 10px;
-                margin-top: 20px;
-                width: 50%;
-                max-width: 500px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            }
+<body>
+    <h1>🚀 Todo List</h1>
+    
+    <ul>
+        <% todolist.forEach(function(todo, index) { %>
+        <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
+            <button class="btn fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</button>
+            <button class="btn complete-btn" onclick="toggleComplete(<%= index %>)">✅</button>
+            <span><%- todo.text %></span>
+            <a href="/todo/edit/<%= index %>" class="btn edit-btn">✎</a>
+            <a href="/todo/delete/<%= index %>" class="btn delete-btn">✘</a>
+        </li>
+        <% }); %>
+    </ul>
 
-            label {
-                display: block;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
+    <form action="/todo/add/" method="post">
+        <input type="text" name="newtodo" placeholder="Add a new task..." autofocus />
+        <input type="submit" value="Add Task" />
+    </form>
 
-            input[type="text"] {
-                width: 100%;
-                padding: 12px;
-                border-radius: 5px;
-                border: none;
-                margin-bottom: 10px;
-                font-size: 16px;
-                background: #3a3a4a;
-                color: white;
-                outline: none;
-            }
+    <script>
+        function toggleComplete(index) {
+            fetch(`/todo/complete/${index}`, { method: 'POST' })
+                .then(() => location.reload());
+        }
 
-            input[type="text"]::placeholder {
-                color: #999;
-            }
-
-            input[type="submit"] {
-                background: linear-gradient(135deg, #ff7eb3, #ff758c);
-                color: white;
-                border: none;
-                padding: 12px;
-                width: 100%;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background 0.3s ease;
-            }
-
-            input[type="submit"]:hover {
-                background: linear-gradient(135deg, #ff4d6d, #ff3b58);
-            }
-
-        </style>
-    </head>
-
-    <body>
-        <h1>🚀 My Todo List</h1>
-        <ul>
-            <% todolist.forEach(function(todo, index) { %>
-            <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
-                <span class="fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</span>
-                <span onclick="toggleComplete(<%= index %>)" class="complete-btn">✅</span>
-                <a href="/todo/<%= index %>" class="edit-btn">✎</a>
-                <%- todo.text %>
-                <a href="/todo/delete/<%= index %>" class="delete-btn">✘</a>
-            </li>
-            <% }); %>
-        </ul>
-
-        <form action="/todo/add/" method="post">
-            <p>
-                <label for="newtodo">What’s next on your list?</label>
-                <input type="text" name="newtodo" id="newtodo" autofocus placeholder="Type a new task..." />
-                <input type="submit" value="Add Task" />
-            </p>
-        </form>
-
-        <script>
-            function toggleComplete(index) {
-                fetch(`/todo/complete/${index}`, { method: 'POST' })
-                    .then(() => location.reload());
-            }
-
-            function toggleFavorite(index) {
-                fetch(`/todo/favorite/${index}`, { method: 'POST' })
-                    .then(() => location.reload());
-            }
-        </script>
-    </body>
+        function toggleFavorite(index) {
+            fetch(`/todo/favorite/${index}`, { method: 'POST' })
+                .then(() => location.reload());
+        }
+    </script>
+</body>
 </html>
