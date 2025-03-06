@@ -111,18 +111,22 @@
 
 <body>
     <h1>🚀 Todo List</h1>
-    
-    <ul>
-        <% todolist.forEach(function(todo, index) { %>
-        <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
-            <button class="btn fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</button>
-            <button class="btn complete-btn" onclick="toggleComplete(<%= index %>)">✅</button>
-            <span><%- todo.text %></span>
-            <a href="/todo/edit/<%= index %>" class="btn edit-btn">✎</a>
-            <a href="/todo/delete/<%= index %>" class="btn delete-btn">✘</a>
-        </li>
-        <% }); %>
-    </ul>
+
+    <% if (todolist.length === 0) { %>
+        <p>No tasks yet! Add one below. 🚀</p>
+    <% } else { %>
+        <ul>
+            <% todolist.forEach(function(todo, index) { %>
+            <li class="<%= todo.completed ? 'completed' : '' %> <%= todo.favorite ? 'favorite' : '' %>">
+                <button class="btn fav-btn" onclick="toggleFavorite(<%= index %>)">⭐</button>
+                <button class="btn complete-btn" onclick="toggleComplete(<%= index %>)">✅</button>
+                <span><%- todo.text %></span>
+                <a href="/todo/edit/<%= index %>" class="btn edit-btn">✎</a>
+                <a href="/todo/delete/<%= index %>" class="btn delete-btn">✘</a>
+            </li>
+            <% }); %>
+        </ul>
+    <% } %>
 
     <form action="/todo/add" method="POST">
         <input type="text" name="newtodo" placeholder="Add a new task..." autofocus required />
