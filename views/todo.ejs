@@ -33,6 +33,7 @@
             justify-content: space-between;
             align-items: center;
             transition: 0.3s;
+            color: white;
         }
 
         ul li:hover {
@@ -123,8 +124,8 @@
         <% }); %>
     </ul>
 
-    <form action="/todo/add/" method="post">
-        <input type="text" name="newtodo" placeholder="Add a new task..." autofocus />
+    <form action="/todo/add" method="POST">
+        <input type="text" name="newtodo" placeholder="Add a new task..." autofocus required />
         <input type="submit" value="Add Task" />
     </form>
 
