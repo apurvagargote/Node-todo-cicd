@@ -1,5 +1,8 @@
 # **Jenkins CI/CD Pipeline Setup on AWS EC2**
 
+![Todo App UI](Images/ToDo-App-1.png)
+
+![Dark Mode UI](Images/ToDo-App-2.png)
 ## 📌 **Key Objectives**
 - Set up an EC2 instance and configure Jenkins.
 - Install and configure Docker for containerized deployments.
@@ -89,7 +92,7 @@
   Port 8000 → For the Todo App
   ```
   This ensures the deployed application is accessible.
-
+![Security Group](Images/security-group.png)
 ---
 
 ## 7. **Login to Jenkins**
@@ -154,7 +157,7 @@
 - Scroll down to **GitHub** and check **GitHub Webhook Trigger for GITScm Polling**.
 - Click **Save**.
   This ensures Jenkins automatically triggers builds when changes are pushed to the GitHub repository.
-
+![Pipeline Stages](Images/pipeline.png)
 ---
 
 ## 11. **Add GitHub Webhook**
@@ -169,16 +172,17 @@
 
 ---
 
-## 12. **Install Stage View Plugin**
-- In **Jenkins**, go to **Manage Jenkins** → **Manage Plugins** → Install **Pipeline Stage View**.
-  Enhances the visibility of pipeline execution stages.
-
----
-
-## 13. **Build the App**
+## 12. **Build the App**
 - Click **Build Now** in Jenkins.
 - Verify the app is running:
   ```bash
   http://your-ec2-ip:8000
   ```
+  ![Todo App UI](Images/ToDo-App-1.png)
   This triggers the pipeline and deploys the application successfully.
+
+---
+## 13. **Install Stage View Plugin**
+- In **Jenkins**, go to **Manage Jenkins** → **Manage Plugins** → Install **Pipeline Stage View**.
+  Enhances the visibility of pipeline execution stages.
+![Jenkins Build](Images/build-img.png)
